@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>NurseLens — Scan it. Know it.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◎</span>
+    <span class="brand-name">NurseLens</span>
+  </div>
+  <span class="tag-eyebrow">bedside reference</span>
+</header>
+
+<main>
+  <section id="scan-screen" class="screen active">
+    <div class="viewfinder" id="viewfinder">
+      <video id="camera" autoplay playsinline muted></video>
+      <canvas id="capture-canvas" hidden></canvas>
+      <div class="reticle">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+      </div>
+      <p class="viewfinder-hint" id="viewfinder-hint">Center the item, then capture</p>
+    </div>
+
+    <div class="controls">
+      <button id="capture-btn" class="capture-btn" aria-label="Capture photo">
+        <span class="capture-btn-ring"></span>
+      </button>
+      <label class="upload-link">
+        or choose a photo
+        <input type="file" id="file-input" accept="image/*" capture="environment" hidden />
+      </label>
+    </div>
+  </section>
+
+  <section id="loading-screen" class="screen">
+    <div class="scan-loader" aria-hidden="true"></div>
+    <p class="loading-text">Reading the item…</p>
+  </section>
+
+  <section id="result-screen" class="screen">
+    <div class="result-card" id="result-card">
+      <!-- populated by app.js -->
+    </div>
+    <button id="scan-again-btn" class="secondary-btn">Scan another item</button>
+  </section>
+
+  <section id="error-screen" class="screen">
+    <p class="error-text" id="error-text">Something went wrong.</p>
+    <button id="error-retry-btn" class="secondary-btn">Try again</button>
+  </section>
+</main>
+
+<footer class="disclaimer">
+  Orientation only — always confirm against the manufacturer's IFU and your facility's policy before clinical use.
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
