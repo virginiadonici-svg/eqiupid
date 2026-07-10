@@ -1,0 +1,285 @@
+:root {
+  --ink: #14231F;
+  --primary: #14312C;
+  --primary-soft: #4B6B63;
+  --accent: #E8A33D;
+  --rust: #B5502A;
+  --bg: #F5F7F6;
+  --card: #FFFFFF;
+  --line: #D8DED9;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 20px 12px;
+}
+
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand-mark { color: var(--accent); font-size: 1.1rem; }
+.brand-name {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+.tag-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-soft);
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px 20px;
+}
+
+.screen { display: none; flex: 1; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ---------- Scan screen ---------- */
+
+.viewfinder {
+  position: relative;
+  flex: 1;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0C201C;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#camera {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reticle {
+  position: absolute;
+  inset: 14%;
+  pointer-events: none;
+}
+.corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 2.5px solid var(--accent);
+}
+.corner.tl { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 6px 0 0 0; }
+.corner.tr { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 6px 0 0; }
+.corner.bl { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 0 0 6px; }
+.corner.br { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 0 0 6px 0; }
+
+.viewfinder-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0 8px;
+}
+
+.capture-btn {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card);
+  box-shadow: 0 0 0 3px var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.capture-btn-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 0.15s ease;
+}
+.capture-btn:active .capture-btn-ring { transform: scale(0.88); }
+
+.upload-link {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--primary-soft);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- Loading screen ---------- */
+
+#loading-screen {
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.scan-loader {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2.5px solid var(--line);
+  border-top-color: var(--accent);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--primary-soft);
+}
+
+/* ---------- Result screen ---------- */
+
+#result-screen { justify-content: flex-start; gap: 16px; padding-top: 8px; }
+
+.result-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 26px 22px 22px;
+  clip-path: polygon(
+    0 18px, 18px 18px, 18px 0,
+    100% 0, 100% 100%, 0 100%
+  );
+  box-shadow: 0 1px 2px rgba(20, 35, 31, 0.04);
+}
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+}
+
+.result-category {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin: 0 0 6px 18px;
+}
+.result-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+.result-confidence {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--primary-soft);
+  margin-bottom: 18px;
+}
+
+.result-section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 18px 0 8px;
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+}
+.result-section-label:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+
+.result-purpose { margin: 0; line-height: 1.5; font-size: 0.96rem; }
+
+.result-steps, .result-watchouts {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.55;
+  font-size: 0.94rem;
+}
+.result-steps li { margin-bottom: 6px; }
+.result-watchouts li { margin-bottom: 6px; color: var(--rust); }
+
+.low-confidence-note {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--rust);
+  background: #FBEFE7;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 4px;
+}
+
+.secondary-btn {
+  align-self: center;
+  margin-top: auto;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 26px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+/* ---------- Error screen ---------- */
+
+#error-screen { align-items: center; justify-content: center; gap: 14px; text-align: center; }
+.error-text { color: var(--rust); font-size: 0.95rem; max-width: 280px; }
+
+/* ---------- Footer ---------- */
+
+.disclaimer {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  color: var(--primary-soft);
+  text-align: center;
+  padding: 10px 24px 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-loader { animation: none; border-top-color: var(--line); }
+}
