@@ -1,3 +1,5 @@
+const API_BASE_URL = 'https://equipid.onrender.com';
+
 const screens = {
   scan: document.getElementById('scan-screen'),
   loading: document.getElementById('loading-screen'),
@@ -24,6 +26,8 @@ function showScreen(name) {
 
 let streamRef = null;
 
+let cameraReady = false;
+
 async function startCamera() {
   try {
     streamRef = await navigator.mediaDevices.getUserMedia({
@@ -31,6 +35,10 @@ async function startCamera() {
       audio: false,
     });
     video.srcObject = streamRef;
+    video.onloadedmetadata = () => {
+      video.play();
+      cameraReady = true;
+    };
   } catch (err) {
     console.warn('Camera unavailable, falling back to file upload only.', err);
     viewfinderHint.textContent = 'Camera unavailable — use "choose a photo" below';
@@ -44,7 +52,10 @@ startCamera();
 // ---------- Capture from live camera ----------
 
 captureBtn.addEventListener('click', () => {
-  if (!streamRef) return;
+  if (!streamRef || !cameraReady || !video.videoWidth || !video.videoHeight) {
+    viewfinderHint.textContent = 'Camera still starting up — wait a moment and try again.';
+    return;
+  }
   const ctx = canvas.getContext('2d');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
@@ -66,7 +77,7 @@ async function submitImage(blob) {
   showScreen('loading');
   try {
     const base64 = await blobToBase64(blob);
-    const response = await fetch('/api/identify', {
+    const response = await fetch(`${API_BASE_URL}/api/identify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image: base64, mediaType: blob.type || 'image/jpeg' }),
