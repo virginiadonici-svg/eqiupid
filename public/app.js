@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://equipid.onrender.com';
+const API_BASE_URL = 'https://eqiupid.onrender.com';
 
 const screens = {
   scan: document.getElementById('scan-screen'),
