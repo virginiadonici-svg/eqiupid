@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://eqiupid.onrender.com';
+const API_BASE_URL = window.location.origin.startsWith('http') ? '' : 'https://eqiupid.onrender.com'; // native Capacitor app needs the explicit URL; web deploy uses same-origin
 
 const screens = {
   scan: document.getElementById('scan-screen'),
