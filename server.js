@@ -15,7 +15,7 @@ if (!process.env.ANTHROPIC_API_KEY) {
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 // Images come in as base64 data URLs from the camera capture — allow a generous body size
-app.use(express.json({ limit: '15mb' }));
+app.use((req, res, next) => { res.header('Access-Control-Allow-Origin', '*'); res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS'); res.header('Access-Control-Allow-Headers', 'Content-Type'); if (req.method === 'OPTIONS') return res.sendStatus(204); next(); }); /* CORS for the Capacitor app at capacitor://localhost */ app.use(express.json({ limit: '15mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const SYSTEM_PROMPT = `You are helping a bedside nurse quickly identify medical equipment or supplies from a photo, at the point of care.
