@@ -282,4 +282,4 @@ main {
 
 @media (prefers-reduced-motion: reduce) {
   .scan-loader { animation: none; border-top-color: var(--line); }
-}
+}/* ---------- Privacy notice ---------- */.privacy-overlay{position:fixed;inset:0;background:rgba(12,32,28,0.72);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}.privacy-overlay.hidden{display:none;}.privacy-card{background:var(--card);border-radius:14px;padding:26px 22px;max-width:360px;box-shadow:0 8px 30px rgba(20,35,31,0.25);}.privacy-eyebrow{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--primary-soft);margin:0 0 6px;}.privacy-title{font-size:1.15rem;font-weight:700;margin:0 0 14px;letter-spacing:-0.01em;}.privacy-points{margin:0 0 20px;padding-left:20px;line-height:1.55;font-size:0.9rem;}.privacy-points li{margin-bottom:10px;}.privacy-points li:last-child{margin-bottom:0;}.privacy-card .secondary-btn{width:100%;margin-top:0;}
