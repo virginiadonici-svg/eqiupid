@@ -15,7 +15,7 @@ const viewfinderHint = document.getElementById('viewfinder-hint');
 const resultCard = document.getElementById('result-card');
 const scanAgainBtn = document.getElementById('scan-again-btn');
 const errorRetryBtn = document.getElementById('error-retry-btn');
-const errorText = document.getElementById('error-text');
+const errorText = document.getElementById('error-text'); const privacyNotice = document.getElementById('privacy-notice'); const privacyAcceptBtn = document.getElementById('privacy-accept-btn');
 
 function showScreen(name) {
   Object.values(screens).forEach((el) => el.classList.remove('active'));
@@ -47,7 +47,7 @@ async function startCamera() {
   }
 }
 
-startCamera();
+const PRIVACY_ACK_KEY = 'nurselens_privacy_ack'; if (localStorage.getItem(PRIVACY_ACK_KEY)) { privacyNotice.classList.add('hidden'); startCamera(); } else { privacyAcceptBtn.addEventListener('click', () => { localStorage.setItem(PRIVACY_ACK_KEY, '1'); privacyNotice.classList.add('hidden'); startCamera(); }); }
 
 // ---------- Capture from live camera ----------
 
