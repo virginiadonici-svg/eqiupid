@@ -43,7 +43,7 @@ For the item in the photo, respond ONLY with JSON in this exact shape, no markdo
 
 If you cannot identify the item with reasonable confidence, set "identified" to false, leave other fields as short best guesses or empty arrays, and set "confidence" to "low".
 
-Keep "how_to_use" to the general, universal steps for this category of item (e.g. how a standard IV extension set is generally primed and connected) — NOT instructions specific to a patient, dose, or clinical scenario. This is orientation for someone who has the clinical training but may not recognize this specific item, not a substitute for the manufacturer's instructions for use (IFU) or facility policy. Do not include drug dosing, titration, or patient-specific clinical decision-making of any kind.
+Keep "how_to_use" to the general, universal steps for this category of item (e.g. how a standard IV extension set is generally primed and connected) — NOT instructions specific to a patient, dose, or clinical scenario. This is orientation for someone who has the clinical training but may not recognize this specific item, not a substitute for the manufacturer's instructions or facility policy. Do not include drug dosing, titration, or patient-specific clinical decision-making of any kind.
 
 Keep "typical_spec" limited to the general product specification as it would appear on standard packaging (volume, size, count). Never estimate or suggest a quantity, dose, or size appropriate for a specific patient, wound, or clinical scenario.`;
 
