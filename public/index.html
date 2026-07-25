@@ -9,7 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 </head>
-<body><div id="privacy-notice" class="privacy-overlay"><div class="privacy-card"><p class="privacy-eyebrow">Before you scan</p><h2 class="privacy-title">How your photos are handled</h2><ul class="privacy-points"><li>Each photo is sent once to Anthropic's Claude for identification, then discarded — nothing is stored.</li><li>Keep patients and any patient information out of frame before you capture.</li><li>This is an orientation reference, not clinical decision support — always confirm against the manufacturer's IFU and your facility's policy.</li></ul><button id="privacy-accept-btn" class="secondary-btn">Got it, continue</button></div></div>
+<body>
+
+<div id="privacy-notice" class="privacy-overlay">
+  <div class="privacy-card">
+    <p class="privacy-eyebrow">Before you scan</p>
+    <h2 class="privacy-title">How your photos are handled</h2>
+    <ul class="privacy-points">
+      <li>Each photo is sent once to Anthropic's Claude for identification, then discarded — nothing is stored.</li>
+      <li>Keep patients and any patient information out of frame before you capture.</li>
+      <li>This is a quick reference guide, not clinical decision support — always confirm against the manufacturer's IFU and your facility's policy.</li>
+    </ul>
+    <button id="privacy-accept-btn" class="secondary-btn">Got it, continue</button>
+  </div>
+</div>
 
 <header class="topbar">
   <div class="brand">
@@ -33,13 +46,15 @@
       <p class="viewfinder-hint" id="viewfinder-hint">Center the item, then capture</p>
     </div>
 
+    <p class="privacy-reminder">Keep patients and patient information out of frame.</p>
+
     <div class="controls">
       <button id="capture-btn" class="capture-btn" aria-label="Capture photo">
         <span class="capture-btn-ring"></span>
       </button>
       <label class="upload-link">
         or choose a photo
-        <input type="file" id="file-input" accept="image/*" capture="environment" hidden />
+        <input type="file" id="file-input" accept="image/*" hidden />
       </label>
     </div>
   </section>
@@ -63,7 +78,7 @@
 </main>
 
 <footer class="disclaimer">
-  Orientation only — always confirm against the manufacturer's IFU and your facility's policy before clinical use.
+  Quick reference only — always confirm against the manufacturer's IFU and your facility's policy before clinical use.
 </footer>
 
 <script src="app.js"></script>
