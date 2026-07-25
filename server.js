@@ -14,8 +14,17 @@ if (!process.env.ANTHROPIC_API_KEY) {
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+// Allow the Capacitor app (served from capacitor://localhost, not this domain) to call this API
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 // Images come in as base64 data URLs from the camera capture — allow a generous body size
-app.use((req, res, next) => { res.header('Access-Control-Allow-Origin', '*'); res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS'); res.header('Access-Control-Allow-Headers', 'Content-Type'); if (req.method === 'OPTIONS') return res.sendStatus(204); next(); }); /* CORS for the Capacitor app at capacitor://localhost */ app.use(express.json({ limit: '15mb' }));
+app.use(express.json({ limit: '15mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const SYSTEM_PROMPT = `You are helping a bedside nurse quickly identify medical equipment or supplies from a photo, at the point of care.
@@ -26,6 +35,7 @@ For the item in the photo, respond ONLY with JSON in this exact shape, no markdo
   "name": "common name of the item",
   "category": "short category, e.g. 'IV Access', 'Wound Care', 'Monitoring', 'Airway', 'PPE'",
   "purpose": "1-2 plain-language sentences on what it's designed to do",
+  "typical_spec": "general product specification such as volume, size, or count printed on standard packaging (e.g., '10 mL vial', 'box of 50', '4x4 inch pad'). Leave as an empty string if not applicable or not confidently known",
   "how_to_use": ["short step", "short step", "short step"],
   "watch_outs": ["brief safety or common-error note", "..."],
   "confidence": "high" | "medium" | "low"
@@ -33,7 +43,9 @@ For the item in the photo, respond ONLY with JSON in this exact shape, no markdo
 
 If you cannot identify the item with reasonable confidence, set "identified" to false, leave other fields as short best guesses or empty arrays, and set "confidence" to "low".
 
-Keep "how_to_use" to the general, universal steps for this category of item (e.g. how a standard IV extension set is generally primed and connected) — NOT instructions specific to a patient, dose, or clinical scenario. This is orientation for someone who has the clinical training but may not recognize this specific item, not a substitute for the manufacturer's instructions for use (IFU) or facility policy. Do not include drug dosing, titration, or patient-specific clinical decision-making of any kind.`;
+Keep "how_to_use" to the general, universal steps for this category of item (e.g. how a standard IV extension set is generally primed and connected) — NOT instructions specific to a patient, dose, or clinical scenario. This is orientation for someone who has the clinical training but may not recognize this specific item, not a substitute for the manufacturer's instructions for use (IFU) or facility policy. Do not include drug dosing, titration, or patient-specific clinical decision-making of any kind.
+
+Keep "typical_spec" limited to the general product specification as it would appear on standard packaging (volume, size, count). Never estimate or suggest a quantity, dose, or size appropriate for a specific patient, wound, or clinical scenario.`;
 
 app.post('/api/identify', async (req, res) => {
   try {
