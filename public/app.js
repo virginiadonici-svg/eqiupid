@@ -1,4 +1,8 @@
-const API_BASE_URL = window.location.origin.startsWith('http') ? '' : 'https://eqiupid.onrender.com'; // native Capacitor app needs the explicit URL; web deploy uses same-origin
+// When served over http(s) (the deployed web app), call the API on the same origin
+// it was loaded from — avoids this drifting out of sync with the Render URL.
+// The native Capacitor app is loaded from capacitor://localhost, so it needs the
+// deployed URL explicitly.
+const API_BASE_URL = window.location.origin.startsWith('http') ? '' : 'https://eqiupid.onrender.com';
 
 const screens = {
   scan: document.getElementById('scan-screen'),
@@ -15,7 +19,9 @@ const viewfinderHint = document.getElementById('viewfinder-hint');
 const resultCard = document.getElementById('result-card');
 const scanAgainBtn = document.getElementById('scan-again-btn');
 const errorRetryBtn = document.getElementById('error-retry-btn');
-const errorText = document.getElementById('error-text'); const privacyNotice = document.getElementById('privacy-notice'); const privacyAcceptBtn = document.getElementById('privacy-accept-btn');
+const errorText = document.getElementById('error-text');
+const privacyNotice = document.getElementById('privacy-notice');
+const privacyAcceptBtn = document.getElementById('privacy-accept-btn');
 
 function showScreen(name) {
   Object.values(screens).forEach((el) => el.classList.remove('active'));
@@ -47,7 +53,18 @@ async function startCamera() {
   }
 }
 
-const PRIVACY_ACK_KEY = 'nurselens_privacy_ack'; if (localStorage.getItem(PRIVACY_ACK_KEY)) { privacyNotice.classList.add('hidden'); startCamera(); } else { privacyAcceptBtn.addEventListener('click', () => { localStorage.setItem(PRIVACY_ACK_KEY, '1'); privacyNotice.classList.add('hidden'); startCamera(); }); }
+const PRIVACY_ACK_KEY = 'nurselens_privacy_ack';
+
+if (localStorage.getItem(PRIVACY_ACK_KEY)) {
+  privacyNotice.classList.add('hidden');
+  startCamera();
+} else {
+  privacyAcceptBtn.addEventListener('click', () => {
+    localStorage.setItem(PRIVACY_ACK_KEY, '1');
+    privacyNotice.classList.add('hidden');
+    startCamera();
+  });
+}
 
 // ---------- Capture from live camera ----------
 
@@ -114,6 +131,7 @@ function renderResult(data) {
     name,
     category,
     purpose,
+    typical_spec,
     how_to_use = [],
     watch_outs = [],
     confidence,
@@ -140,6 +158,10 @@ function renderResult(data) {
     ? `<p class="low-confidence-note">Low confidence — verify against the item's label before relying on this.</p>`
     : '';
 
+  const specHtml = typical_spec
+    ? `<p class="result-section-label">Typical size / volume</p><p class="result-spec">${escapeHtml(typical_spec)}</p>`
+    : '';
+
   resultCard.innerHTML = `
     <p class="result-category">${escapeHtml(category || '')}</p>
     <h2 class="result-name">${escapeHtml(name || 'Unknown item')}</h2>
@@ -147,6 +169,7 @@ function renderResult(data) {
     ${lowConfidenceHtml}
     <p class="result-section-label">Purpose</p>
     <p class="result-purpose">${escapeHtml(purpose || '')}</p>
+    ${specHtml}
     ${stepsHtml}
     ${watchHtml}
   `;
