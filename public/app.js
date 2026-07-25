@@ -1,5 +1,5 @@
 // When served over http(s) (the deployed web app), call the API on the same origin
-// it was loaded from — avoids this drifting out of sync with the Render URL.
+// it was loaded from. This avoids drifting out of sync with the Render URL.
 // The native Capacitor app is loaded from capacitor://localhost, so it needs the
 // deployed URL explicitly.
 const API_BASE_URL = window.location.origin.startsWith('http') ? '' : 'https://eqiupid.onrender.com';
@@ -47,7 +47,7 @@ async function startCamera() {
     };
   } catch (err) {
     console.warn('Camera unavailable, falling back to file upload only.', err);
-    viewfinderHint.textContent = 'Camera unavailable — use "choose a photo" below';
+    viewfinderHint.textContent = 'Camera unavailable. Use "choose a photo" below';
     captureBtn.disabled = true;
     captureBtn.style.opacity = '0.4';
   }
@@ -70,7 +70,7 @@ if (localStorage.getItem(PRIVACY_ACK_KEY)) {
 
 captureBtn.addEventListener('click', () => {
   if (!streamRef || !cameraReady || !video.videoWidth || !video.videoHeight) {
-    viewfinderHint.textContent = 'Camera still starting up — wait a moment and try again.';
+    viewfinderHint.textContent = 'Camera still starting up. Wait a moment and try again.';
     return;
   }
   const ctx = canvas.getContext('2d');
@@ -155,7 +155,7 @@ function renderResult(data) {
     : '';
 
   const lowConfidenceHtml = confidence === 'low'
-    ? `<p class="low-confidence-note">Low confidence — verify against the item's label before relying on this.</p>`
+    ? `<p class="low-confidence-note">Low confidence. Verify against the item's label before relying on this.</p>`
     : '';
 
   const specHtml = typical_spec
