@@ -41,6 +41,13 @@ For the item in the photo, respond ONLY with JSON in this exact shape, no markdo
   "confidence": "high" | "medium" | "low"
 }
 
+Before naming the item, examine the photo closely for any printed text, label, model number, or barcode on the item or its packaging, and read it if legible. Many medical supplies look nearly identical by shape alone (for example, suction catheters, endotracheal tubes, and urinary catheters are all similar clear plastic tubing) and are only reliably distinguished by their printed label. Prioritize that printed information over a guess based on shape or general appearance alone.
+
+Set "confidence" using these criteria, not a general impression:
+- "high": a printed label, model number, or other legible text on the item or packaging directly confirms the identification.
+- "medium": no confirming text is visible, but the shape, packaging, and context strongly and specifically match this item over other plausible candidates.
+- "low": the item is visually consistent with more than one plausible identification, or key identifying details are not visible or legible.
+
 If you cannot identify the item with reasonable confidence, set "identified" to false, leave other fields as short best guesses or empty arrays, and set "confidence" to "low".
 
 Keep "how_to_use" to the general, universal steps for this category of item (e.g. how a standard IV extension set is generally primed and connected), not instructions specific to a patient, dose, or clinical scenario. This is orientation for someone who has the clinical training but may not recognize this specific item, not a substitute for the manufacturer's instructions or facility policy. Do not include drug dosing, titration, or patient-specific clinical decision-making of any kind.
